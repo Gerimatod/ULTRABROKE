@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c71vsdd7eh2xc"
+path="res://.godot/imported/rat.obj-e1ce0b6fe2dcaa3d1d519379380019ec.mesh"
+
+[deps]
+
+files=["res://.godot/imported/rat.obj-e1ce0b6fe2dcaa3d1d519379380019ec.mesh"]
+
+source_file="res://Meshes/rat.obj"
+dest_files=["res://.godot/imported/rat.obj-e1ce0b6fe2dcaa3d1d519379380019ec.mesh", "res://.godot/imported/rat.obj-e1ce0b6fe2dcaa3d1d519379380019ec.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
