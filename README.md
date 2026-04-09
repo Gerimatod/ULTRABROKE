@@ -1,1 +1,2 @@
-this is my submission to the bad ideas game jam. play it here! https://gerimatod.itch.io/ultrabroke-fixed
+these are the project files of my submission to the bad ideas game jam. play it here! https://gerimatod.itch.io/ultrabroke-fixed
+also this is a really buggy version of the project, and its missing the 'sprites' folder, i urge you to only look at the other branch, as i am too lazy to add it, and the only difference between this branch and the other, is that this one is buggyier, and the room generation doesn't work outside of the editor.
