@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://buu35sgpg668"]
+
+[ext_resource type="Script" path="res://Scripts/unusable_item.gd" id="1_joiwv"]
+[ext_resource type="Texture2D" uid="uid://med0h5loi8rr" path="res://Sprites/Items/placeholder.png" id="2_f825m"]
+
+[node name="unusable_item" type="Node3D"]
+script = ExtResource("1_joiwv")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.571521, -0.0894742, -0.776774)
+pixel_size = 0.004
+billboard = 1
+texture_filter = 0
+texture = ExtResource("2_f825m")

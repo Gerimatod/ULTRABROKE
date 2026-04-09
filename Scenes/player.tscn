@@ -1,0 +1,967 @@
+[gd_scene load_steps=48 format=4 uid="uid://cbeaqmsrccq0x"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_r0803"]
+[ext_resource type="Texture2D" uid="uid://c5j4hqju8edqu" path="res://Sprites/enemy_textures/guy.png" id="2_5twdx"]
+[ext_resource type="Texture2D" uid="uid://d17y4g21ou1m3" path="res://Sprites/UI/HPbarUnder.png" id="3_ock76"]
+[ext_resource type="Texture2D" uid="uid://rjrwp3787ci1" path="res://Sprites/UI/HPbar.png" id="4_hyvie"]
+[ext_resource type="Texture2D" uid="uid://dle67fcfqrafy" path="res://Sprites/UI/crosshair.png" id="5_tpl6r"]
+[ext_resource type="Texture2D" uid="uid://bikff1a4bwb7r" path="res://Sprites/UI/weapon_slot.png" id="6_odfy1"]
+[ext_resource type="PackedScene" uid="uid://6bnjx13omuja" path="res://Scenes/cool_item_list.tscn" id="6_sjlf7"]
+[ext_resource type="Texture2D" uid="uid://dvcgjbs4hhvkn" path="res://Sprites/UI/util_slot.png" id="7_76nb2"]
+[ext_resource type="Texture2D" uid="uid://dohh00i1kgaau" path="res://Sprites/UI/hotb_pointer.png" id="8_r4icd"]
+[ext_resource type="Texture2D" uid="uid://bp3pi410byqkc" path="res://Sprites/UI/loading_icon.png" id="9_mb52q"]
+[ext_resource type="AudioStream" uid="uid://be072qojm31t3" path="res://Sound/SFX/parry.mp3" id="9_p4k6k"]
+[ext_resource type="Script" path="res://Scripts/box_ui.gd" id="10_fkuq7"]
+[ext_resource type="PackedScene" uid="uid://bqaes6waktm7" path="res://Scenes/box_list_item.tscn" id="10_m1258"]
+[ext_resource type="Texture2D" uid="uid://ds5kr7mn7f3gh" path="res://Sprites/UI/zzz.png" id="10_n8oqd"]
+[ext_resource type="Texture2D" uid="uid://too7ev4hscx2" path="res://Sprites/UI/bossbarUnder.png" id="13_7rdqa"]
+[ext_resource type="AudioStream" uid="uid://d2vf6rqo85pfi" path="res://Sound/Music/music_calm.mp3" id="13_xl7ts"]
+[ext_resource type="Texture2D" uid="uid://ded27gon4gbe0" path="res://Sprites/UI/bossbar.png" id="14_ti7fg"]
+[ext_resource type="AudioStream" uid="uid://4ba0vorbue4h" path="res://Sound/Music/music_combat.mp3" id="14_ukhr1"]
+[ext_resource type="AudioStream" uid="uid://gac5rdns4g11" path="res://Sound/Music/night_ambiance.mp3" id="19_dowox"]
+[ext_resource type="AudioStream" uid="uid://dsek140vymtql" path="res://Sound/SFX/Sliding.mp3" id="20_k6wo2"]
+[ext_resource type="AudioStream" uid="uid://b6tpelljejhup" path="res://Sound/Music/woosh.mp3" id="20_rybko"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gpjdn"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_dftvc"]
+
+[sub_resource type="Sky" id="Sky_wlkf2"]
+sky_material = SubResource("PanoramaSkyMaterial_dftvc")
+
+[sub_resource type="Environment" id="Environment_t6swv"]
+background_mode = 1
+background_color = Color(0.312805, 0.519204, 0.630401, 1)
+sky = SubResource("Sky_wlkf2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ynllb"]
+albedo_texture = ExtResource("2_5twdx")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_a82db"]
+_surfaces = [{
+"aabb": AABB(1.64369, -2.79661, -0.683019, 4.761, 1.1802, 1.19374),
+"attribute_data": PackedByteArray("qpOvfUSfC33Fk5iVeZ/flC2HG32qk699IIcKlcWTmJU5goGPqZBMlH+DmasckkyxqZBMlG+eEo4ckkyxAaA0qu2P4IrQnQGQwJAypc+eC6usiK6Q5ZQ9jIuINqzilASnOoOZfu2P4IrUg5qWwJAypeWUPYySnfN94pQEp6eddJYghwqVxZOYlf2HS72xk0O9xZOYlXmf35Sxk0O9qp48vRySTLEBoDSq2JKrvgmg/72LiDas4pQEpyCJlr+klIG/f4OZqxySTLF+hVm/2JKrvuKUBKennXSWpJSBv+Cct7/AkDKlz54Lq22R9L1hnsG+1IOalsCQMqXbheW/bZH0vZGTQBqqnqUVv5McL6Of0ii/kxwvo5/SKOuT5FB4n7BH65PkUHifsEeglONy+JzDZqCU43L4nMNm5ZQ9jJKd8310f/EWXo+AGRl/rykjkKotGX+vKSOQqi0cgF9Iv5BITxyAX0i/kEhPKoPnZ2aPLnIqg+dnZo8ucjqDmX7tj+CKxIO3G5GTQBoNgzsxv5McLw2DOzG/kxwvr4PYU+uT5FCvg9hT65PkULeIrnaglONyt4iudqCU43KsiK6Q5ZQ9jF6PgBkooYIbI5CqLfSihTAjkKot9KKFML+QSE8To/RSv5BITxOj9FJmjy5y75yJdmaPLnLvnIl27Y/gitCdAZA9i00ZwpuSFn2L2C9Xm40sfYvYL1ebjSxijUxUwpzrT2KNTFTCnOtPPo/ieKycgnM+j+J4rJyCc6mQTJRvnhKOXnpFGD2LTRlKey8ufYvYL0p7Ly59i9gvjX2BUWKNTFSNfYFRYo1MVD2B53Q+j+J4PYHndD6P4ng5goGPqZBMlCCEZhfXkqQXfoUPKq+TQyp+hQ8qr5NDKtuFL0itk4pI24UvSK2Tikh4h3JmkpPsZniHcmaSk+xmLYcbfaqTr33XkqQXiqBUF6+TQyrcoP4pr5NDKtyg/imtk4pIg6AeSK2TikiDoB5IkpPsZtGeY2aSk+xm0Z5jZqqTr31Enwt9xYCKrxmEna7FgFu8PZd7un+dF7KXnEG5QJcortiY5LVSkoOwAI36q+qGbrZlgG2sXo1Nu7WXBLPRlne5bY7nthmEna6MjXSwv6V7un+de7qqpcCtXo2+q16NTbtVio6tSpuorX+dF7Jzk6itAI36q2WAbay4ivuoXp9qtNiY5LW8nFauXp9qtF6f5rrYmOS1cZpdvXGaXb30lBO92JjktcWAW7wZhJ2uGYRUv1KSg7DYmOS1UpIjt+qGbrYAjfqrLoxbtWWAbazqhm62jIG9tbWXBLNejU27Xo2+q7WXBLNejb6r0ZaXrBmEVL9tjue2jI1TvW2O57YZhFS/GYSdrqqlwK1/nXu61p3ArVWKYLpzk6itf50XsiyRG7G4ivuoZYBtrHWC+6i8nFau2JjktUCXKK7YmOS19JQTvVKSI7c9l3u69ZHnuCyRG7E9l3u6LJEbsX+dF7I="),
+"format": 34896613399,
+"index_count": 378,
+"index_data": PackedByteArray("AAABAAIAAgABAAMABAAFAAYABgAFAAcACAAJAAoACgAJAAsADAANAA4ADgANAA8AEAARABIAEgARABMAFAAVABYAFgAVABcAGAAZABoAGgAZABsAHAAdAB4AHgAdAB8AIAAhACIAIgAhACMAJAAlACYAJgAlACcAKAApACoAKgApACsALAAtAC4ALgAtAC8AMAAxADIAMgAxADMANAA1ADYANgA1ADcAOAA5ADoAOgA5ADsAPAA9AD4APgA9AD8AQABBAEIAQgBBAEMARABFAEYARgBFAEcASABJAEoASgBJAEsATABNAE4ATgBNAE8AUABRAFIAUgBRAFMAVABVAFYAVgBVAFcAWABZAFoAWgBZAFsAXABdAF4AXgBdAF8AYABhAGIAYgBhAGMAZABlAGYAZgBlAGcAaABpAGoAagBpAGsAbABtAG4AbgBtAG8AcABxAHIAcgBxAHMAdAB1AHYAdgB1AHcAeAB5AHoAegB5AHsAfAB9AH4AfgB9AH8AgACBAIIAggCBAIMAhACFAIYAhgCFAIcAiACJAIoAigCJAIsAjACNAI4AjgCNAI8AkACRAJIAkgCRAJMAlACVAJYAlgCVAJcAmACZAJoAmgCZAJsAnACdAJ4AngCdAJ8AoAChAKIAogChAKMApAClAKYApgClAKcAqACpAKoAqgCpAKsArACtAK4ArgCtAK8AsACxALIAsgCxALMAtAC1ALYAtgC1ALcAuAC5ALoAugC5ALsAvAC9AL4AvgC9AL8AwADBAMIAwwDEAMUAxgDHAMgAyQDKAMsAzADNAM4AzwDQANEA0gDTANQA1QDWANcA2ADZANoA2wDcAN0A3gDfAOAA4QDiAOMA4wDiAOQA5QDmAOcA6ADpAOoA6wDsAO0A7gDvAPAA8QDyAPMA9AD1APYA9wD4APkA+gD7APwA/QD+AP8AAAEBAQIB1wDWAAMBBAEFAQYBBwEIAQkBCgELAQwBDQEOAQ8BEAERARIBEwEUARUB"),
+"material": SubResource("StandardMaterial3D_ynllb"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 278,
+"vertex_data": PackedByteArray("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")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="Animation" id="Animation_uoudf"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("punchyHand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.639163, -0.51998, 0.512931)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("punchyHand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.320408, -0.0999985, -0.0315899)]
+}
+
+[sub_resource type="Animation" id="Animation_tkv5c"]
+resource_name = "punch"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("punchyHand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.333333, 0.4, 0.466667, 0.533333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.639163, -0.51998, 0.512931), Vector3(-0.501182, -0.356752, -0.489428), Vector3(-0.276451, -0.286704, -0.625103), Vector3(0.0579907, -0.269556, -0.707967), Vector3(0.291336, -0.268162, -0.73107), Vector3(0.373585, -0.277076, -0.699065), Vector3(0.414053, -0.281266, -0.683986), Vector3(0.414285, -0.283748, -0.675551), Vector3(0.398667, -0.286632, -0.666083), Vector3(0.309996, -0.302602, -0.613699), Vector3(0.100896, -0.365789, -0.465761), Vector3(-0.159194, -0.390106, -0.388627), Vector3(-0.639163, -0.51998, 0.512931)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("punchyHand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.333333, 0.4, 0.466667, 0.533333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.320408, -0.0999985, -0.0315899), Vector3(0.317099, -0.179119, -0.0563968), Vector3(0.205719, -0.739563, -0.215011), Vector3(0.0449444, -1.34381, -0.293142), Vector3(-0.0727986, -1.73264, -0.287648), Vector3(-0.0805006, -1.86928, -0.275137), Vector3(-0.093384, -1.91544, -0.271129), Vector3(-0.0967007, -1.92745, -0.269989), Vector3(-0.0786829, -1.86283, -0.27565), Vector3(-0.0563474, -1.78452, -0.280937), Vector3(-0.0159996, -1.64614, -0.28595), Vector3(0.164347, -0.993561, -0.235604), Vector3(0.320408, -0.0999985, -0.0315899)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sck2h"]
+_data = {
+"RESET": SubResource("Animation_uoudf"),
+"punch": SubResource("Animation_tkv5c")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_5eo3x"]
+font_size = 30
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jbecx"]
+font_size = 32
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tdgq1"]
+atlas = ExtResource("9_mb52q")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0tcn7"]
+atlas = ExtResource("9_mb52q")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mqx4v"]
+atlas = ExtResource("10_n8oqd")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tirrr"]
+atlas = ExtResource("10_n8oqd")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pqn5x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tdgq1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0tcn7")
+}],
+"loop": true,
+"name": &"stopwatch",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mqx4v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tirrr")
+}],
+"loop": true,
+"name": &"zzz",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rigiy"]
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_al87b"]
+font_size = 75
+
+[sub_resource type="LabelSettings" id="LabelSettings_cxe4w"]
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_xv873"]
+font_size = 30
+
+[sub_resource type="Curve" id="Curve_utqen"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.123188, 0), 0.0, 0.0, 0, 0, Vector2(0.202899, 1), 0.0, 0.0, 0, 0, Vector2(0.818841, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_64230"]
+curve = SubResource("Curve_utqen")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_goetr"]
+direction = Vector3(0, 0, 1)
+spread = 25.0
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_64230")
+
+[sub_resource type="Curve" id="Curve_0qrkg"]
+_data = [Vector2(0, 0), 0.0, 3.63794, 0, 0, Vector2(0.211765, 1), -0.934066, -0.934066, 0, 0, Vector2(1, 0), -1.1039, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_omkh4"]
+shading_mode = 0
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_3te46"]
+material = SubResource("StandardMaterial3D_omkh4")
+shape = 0
+size = 0.05
+curve = SubResource("Curve_0qrkg")
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 4
+script = ExtResource("1_r0803")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_gpjdn")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+environment = SubResource("Environment_t6swv")
+
+[node name="ToolHolder" type="Node3D" parent="Camera"]
+
+[node name="PunchCast" type="RayCast3D" parent="Camera"]
+target_position = Vector3(0, 0, -3)
+collision_mask = 10
+
+[node name="InteractCast" type="RayCast3D" parent="Camera"]
+target_position = Vector3(0, 0, -2)
+collision_mask = 16
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="punchyHand" type="Node3D" parent="Camera"]
+transform = Transform3D(0.995501, 1.00583e-07, -0.0947512, -0.0299772, 0.948633, -0.314954, 0.0898841, 0.316377, 0.944366, -0.639163, -0.51998, 0.512931)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera/punchyHand"]
+transform = Transform3D(-0.0208241, 0.123893, 0.352513, -0.0299667, 0.351369, -0.125261, -0.372447, -0.035198, -0.00963106, 0.242647, 0.794024, 1.594)
+mesh = SubResource("ArrayMesh_a82db")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera"]
+libraries = {
+"": SubResource("AnimationLibrary_sck2h")
+}
+
+[node name="UI" type="CanvasLayer" parent="Camera"]
+
+[node name="Bars" type="Control" parent="Camera/UI"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+offset_right = 400.0
+grow_vertical = 0
+
+[node name="hpbar" type="TextureProgressBar" parent="Camera/UI/Bars"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = 25.0
+grow_horizontal = 2
+value = 100.0
+texture_under = ExtResource("3_ock76")
+texture_progress = ExtResource("4_hyvie")
+
+[node name="hplabel" type="Label" parent="Camera/UI/Bars/hpbar"]
+layout_mode = 0
+offset_left = 353.0
+offset_top = 6.0
+offset_right = 404.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 30
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Crosshair" type="Control" parent="Camera/UI"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Camera/UI/Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.5
+offset_top = -27.5
+offset_right = 27.5
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_tpl6r")
+
+[node name="InteractionTooltip" type="Label" parent="Camera/UI/Crosshair"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -78.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "E - Interact"
+label_settings = SubResource("LabelSettings_5eo3x")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ParryFlash" type="ColorRect" parent="Camera/UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.517647)
+
+[node name="Inventory" type="Control" parent="Camera/UI"]
+visible = false
+z_index = 1
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Camera/UI/Inventory"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -8.375
+anchor_top = -7.35
+anchor_right = -1.85
+anchor_bottom = -5.425
+offset_top = -4.0
+offset_bottom = -4.0
+theme_override_font_sizes/font_size = 56
+text = "Inventory"
+
+[node name="Slot1" type="Button" parent="Camera/UI/Inventory"]
+layout_mode = 0
+offset_left = 393.0
+offset_top = -233.0
+offset_right = 523.0
+offset_bottom = -103.0
+
+[node name="Texture" type="TextureRect" parent="Camera/UI/Inventory/Slot1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_odfy1")
+expand_mode = 4
+
+[node name="Slot2" type="Button" parent="Camera/UI/Inventory"]
+layout_mode = 0
+offset_left = 393.0
+offset_top = -100.0
+offset_right = 523.0
+offset_bottom = 30.0
+
+[node name="Texture" type="TextureRect" parent="Camera/UI/Inventory/Slot2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_odfy1")
+expand_mode = 4
+
+[node name="Slot3" type="Button" parent="Camera/UI/Inventory"]
+layout_mode = 0
+offset_left = 393.0
+offset_top = 34.0
+offset_right = 523.0
+offset_bottom = 164.0
+
+[node name="Texture" type="TextureRect" parent="Camera/UI/Inventory/Slot3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_odfy1")
+expand_mode = 4
+
+[node name="UtilSlot" type="Button" parent="Camera/UI/Inventory"]
+layout_mode = 0
+offset_left = 393.0
+offset_top = 168.0
+offset_right = 493.0
+offset_bottom = 268.0
+
+[node name="Texture" type="TextureRect" parent="Camera/UI/Inventory/UtilSlot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_76nb2")
+expand_mode = 4
+
+[node name="CoolItemList" parent="Camera/UI/Inventory" instance=ExtResource("6_sjlf7")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -358.0
+offset_top = -244.5
+offset_right = 362.0
+offset_bottom = 244.5
+
+[node name="WeightLabel" type="Label" parent="Camera/UI/Inventory"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 55.0
+offset_top = -285.0
+offset_right = 315.0
+offset_bottom = -250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "Carrying capacity: 1/5"
+
+[node name="hungerbar" type="TextureProgressBar" parent="Camera/UI/Inventory"]
+self_modulate = Color(0.564725, 0.937411, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -411.0
+offset_top = 198.0
+offset_right = -25.0
+offset_bottom = 242.0
+grow_horizontal = 2
+rotation = -1.57079
+max_value = 10.0
+value = 10.0
+texture_under = ExtResource("3_ock76")
+texture_progress = ExtResource("4_hyvie")
+
+[node name="hungerlabel" type="Label" parent="Camera/UI/Inventory/hungerbar"]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 6.99987
+offset_right = 113.0
+offset_bottom = 48.9999
+rotation = 1.57079
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Money" type="Control" parent="Camera/UI"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -237.0
+offset_bottom = 103.0
+grow_horizontal = 0
+
+[node name="Label" type="Label" parent="Camera/UI/Money"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 70
+text = "$0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Hotbar" type="Control" parent="Camera/UI"]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -390.0
+offset_top = -97.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="UtilSlot" type="ColorRect" parent="Camera/UI/Hotbar"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -19.5
+offset_right = -9.0
+offset_bottom = 39.5
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0, 0, 0, 0.290196)
+
+[node name="Texture" type="TextureRect" parent="Camera/UI/Hotbar/UtilSlot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_76nb2")
+expand_mode = 2
+
+[node name="Slot3" type="ColorRect" parent="Camera/UI/Hotbar"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -156.0
+offset_top = -37.5
+offset_right = -79.0
+offset_bottom = 39.5
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0, 0, 0, 0.290196)
+
+[node name="Texture" type="TextureRect" parent="Camera/UI/Hotbar/Slot3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_odfy1")
+expand_mode = 2
+
+[node name="Slot2" type="ColorRect" parent="Camera/UI/Hotbar"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -245.0
+offset_top = -37.5
+offset_right = -168.0
+offset_bottom = 39.5
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0, 0, 0, 0.290196)
+
+[node name="Texture" type="TextureRect" parent="Camera/UI/Hotbar/Slot2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_odfy1")
+expand_mode = 2
+
+[node name="Slot1" type="ColorRect" parent="Camera/UI/Hotbar"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -334.0
+offset_top = -37.5
+offset_right = -257.0
+offset_bottom = 39.5
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0, 0, 0, 0.290196)
+
+[node name="Texture" type="TextureRect" parent="Camera/UI/Hotbar/Slot1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_odfy1")
+expand_mode = 2
+
+[node name="pointer" type="TextureRect" parent="Camera/UI/Hotbar/Slot1"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -19.5
+offset_top = -40.0
+offset_right = 20.5
+grow_horizontal = 2
+texture = ExtResource("8_r4icd")
+
+[node name="Loading_screen" type="ColorRect" parent="Camera/UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="Camera/UI/Loading_screen"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -469.0
+offset_top = -82.0
+offset_right = -96.0
+offset_bottom = -37.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Travelling to the alleys..."
+label_settings = SubResource("LabelSettings_jbecx")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Camera/UI/Loading_screen/Label"]
+position = Vector2(405, 16)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_pqn5x")
+animation = &"stopwatch"
+autoplay = "stopwatch"
+
+[node name="BoxUI" type="Control" parent="Camera/UI"]
+visible = false
+z_index = 1
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_fkuq7")
+
+[node name="Label" type="Label" parent="Camera/UI/BoxUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -8.375
+anchor_top = -7.35
+anchor_right = -1.85
+anchor_bottom = -5.425
+offset_left = -195.0
+offset_top = -4.0
+offset_right = -195.0
+offset_bottom = -4.0
+theme_override_font_sizes/font_size = 56
+text = "Inventory"
+
+[node name="Label2" type="Label" parent="Camera/UI/BoxUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -8.375
+anchor_top = -7.35
+anchor_right = -1.85
+anchor_bottom = -5.425
+offset_left = 379.0
+offset_top = -4.0
+offset_right = 379.0
+offset_bottom = -4.0
+theme_override_font_sizes/font_size = 56
+text = "Box
+"
+
+[node name="Inventory" parent="Camera/UI/BoxUI" instance=ExtResource("6_sjlf7")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -556.0
+offset_top = -245.0
+offset_right = -22.0
+offset_bottom = 244.0
+listItem = ExtResource("10_m1258")
+
+[node name="Box" parent="Camera/UI/BoxUI" instance=ExtResource("6_sjlf7")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = -245.0
+offset_right = 549.0
+offset_bottom = 244.0
+listItem = ExtResource("10_m1258")
+is_box = true
+
+[node name="InvWeightLabel" type="Label" parent="Camera/UI/BoxUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -276.0
+offset_top = -285.0
+offset_right = -16.0
+offset_bottom = -250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "Carrying capacity: 1/5"
+
+[node name="BoxWeightLabel2" type="Label" parent="Camera/UI/BoxUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 139.0
+offset_top = -285.0
+offset_right = 399.0
+offset_bottom = -250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "Carrying capacity: 1/5"
+
+[node name="Bossbar" type="Control" parent="Camera/UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_right = 500.0
+offset_bottom = 70.0
+grow_horizontal = 2
+
+[node name="bar" type="TextureProgressBar" parent="Camera/UI/Bossbar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 20.0
+step = 0.1
+value = 20.0
+texture_under = ExtResource("13_7rdqa")
+texture_progress = ExtResource("14_ti7fg")
+
+[node name="name" type="Label" parent="Camera/UI/Bossbar/bar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.5
+offset_top = -21.0
+offset_right = 25.5
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 52
+text = "Homerunner
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SleepLabel" type="Label" parent="Camera/UI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -182.0
+offset_top = -100.0
+offset_right = 182.0
+offset_bottom = -77.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "You must empty your inventory befor sleeping!"
+label_settings = SubResource("LabelSettings_rigiy")
+
+[node name="WinScreen" type="Control" parent="Camera/UI"]
+visible = false
+z_index = 8
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Camera/UI/WinScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.219643, 0.399164, 0.572801, 1)
+
+[node name="Label" type="Label" parent="Camera/UI/WinScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -154.0
+offset_top = 52.0
+offset_right = 154.0
+offset_bottom = 155.0
+grow_horizontal = 2
+text = "You win!"
+label_settings = SubResource("LabelSettings_al87b")
+
+[node name="DayCounter" type="Label" parent="Camera/UI/WinScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -154.0
+offset_top = 140.0
+offset_right = 154.0
+offset_bottom = 243.0
+grow_horizontal = 2
+text = "Finished in 6 days"
+label_settings = SubResource("LabelSettings_cxe4w")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Camera/UI/WinScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -114.5
+offset_right = 350.0
+offset_bottom = 114.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "The mysterious man showed up, and sold you a really beat-up apartment for $100. You feel like you're getting watched when you sleep, but it's better than living in acardboard box in an alleyway."
+label_settings = SubResource("LabelSettings_xv873")
+autowrap_mode = 2
+
+[node name="ReplayButton" type="Button" parent="Camera/UI/WinScreen"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -67.0
+offset_top = -84.0
+offset_right = 67.0
+offset_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Replay"
+
+[node name="QuitButton" type="Button" parent="Camera/UI/WinScreen"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -67.0
+offset_top = -144.0
+offset_right = 67.0
+offset_bottom = -89.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Quit
+"
+
+[node name="AudioListener3D" type="AudioListener3D" parent="Camera"]
+
+[node name="punchCoolDown" type="Timer" parent="."]
+wait_time = 0.55
+
+[node name="ParticlePivot" type="Node3D" parent="."]
+
+[node name="Particles" type="GPUParticles3D" parent="ParticlePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.51854)
+emitting = false
+amount = 10
+lifetime = 0.2
+local_coords = true
+transform_align = 2
+trail_lifetime = 3.02
+process_material = SubResource("ParticleProcessMaterial_goetr")
+draw_pass_1 = SubResource("RibbonTrailMesh_3te46")
+
+[node name="ParrySound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_p4k6k")
+
+[node name="music_calm" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_xl7ts")
+
+[node name="music_combat" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_ukhr1")
+
+[node name="night_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("19_dowox")
+
+[node name="slide_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_k6wo2")
+
+[node name="woosh" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_rybko")
+
+[connection signal="pressed" from="Camera/UI/Inventory/Slot1" to="." method="_on_slot_1_pressed"]
+[connection signal="pressed" from="Camera/UI/Inventory/Slot2" to="." method="_on_slot_2_pressed"]
+[connection signal="pressed" from="Camera/UI/Inventory/Slot3" to="." method="_on_slot_3_pressed"]
+[connection signal="pressed" from="Camera/UI/Inventory/UtilSlot" to="." method="_on_util_slot_pressed"]
+[connection signal="pressed" from="Camera/UI/WinScreen/ReplayButton" to="." method="_on_replay_button_pressed"]
+[connection signal="pressed" from="Camera/UI/WinScreen/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://djngad77gxypj"
+path="res://.godot/imported/store_shelf.obj-f54b2c4ff5eb6d46f3330a0c20ea219b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/store_shelf.obj-f54b2c4ff5eb6d46f3330a0c20ea219b.mesh"]
+
+source_file="res://Meshes/store_shelf.obj"
+dest_files=["res://.godot/imported/store_shelf.obj-f54b2c4ff5eb6d46f3330a0c20ea219b.mesh", "res://.godot/imported/store_shelf.obj-f54b2c4ff5eb6d46f3330a0c20ea219b.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

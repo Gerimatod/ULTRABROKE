@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwoabqdtixln1"]
+
+[ext_resource type="Script" path="res://Scripts/pizza.gd" id="1_indrc"]
+[ext_resource type="Texture2D" uid="uid://cfr0buf44j8y0" path="res://Sprites/Items/food_scraps.png" id="2_alc37"]
+
+[node name="Pizza" type="Node3D"]
+script = ExtResource("1_indrc")
+food = 0.5
+heal = 10
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.374033, -0.0153736, -0.0310815, 0.028176, 0.331005, 0.175343, 0.0202124, -0.176926, 0.330743, 0.324392, -0.117493, -0.706221)
+texture_filter = 0
+texture = ExtResource("2_alc37")
